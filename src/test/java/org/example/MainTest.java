@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import java.io.FileInputStream;
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -18,8 +20,11 @@ public class MainTest {
     void setUp() {
         try {
             ClassLoader classLoader = Main.class.getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream("Maven.xlsx");
-            workbook = WorkbookFactory.create(inputStream);
+            try (InputStream inputStream = classLoader.getResourceAsStream("Maven.xlsx")) {
+
+                workbook = WorkbookFactory.create(Objects.requireNonNull(inputStream));
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,22 +62,14 @@ public class MainTest {
             assertEquals("Department", headerRow.getCell(2).getStringCellValue());
         }
 
-        // Assuming there are 10 rows with employee data
+
         int rowCount = 0;
         while (rowIterator.hasNext() && rowCount < 10) {
             Row row = rowIterator.next();
-            // Assuming columns are in the order: Name, Employee Number, Department
-            String name = row.getCell(0).getStringCellValue();
-            int employeeNumber = (int) row.getCell(1).getNumericCellValue();
-            String department = row.getCell(2).getStringCellValue();
-
-            // Perform assertions here to validate the data
-            // For example, assert that name, employeeNumber, and department are not null
-
             rowCount++;
         }
 
-        assertEquals(10, rowCount); // Assuming there are 10 rows of data
+        assertEquals(10, rowCount);
     }
 }
 
