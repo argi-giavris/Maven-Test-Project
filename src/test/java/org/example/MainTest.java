@@ -1,75 +1,72 @@
 package org.example;
-import org.apache.poi.ss.usermodel.*;
+
+
+import org.example.models.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 
-import java.io.FileInputStream;
-import java.util.Objects;
+import java.io.*;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MainTest {
 
-    private Workbook workbook;
+    Util util ;
+
+    void provideInput(String data) {
+        ByteArrayInputStream testIn = new ByteArrayInputStream(data.getBytes());
+        System.setIn(testIn);
+    }
+
 
     @BeforeEach
     void setUp() {
-        try {
-            ClassLoader classLoader = Main.class.getClassLoader();
-            try (InputStream inputStream = classLoader.getResourceAsStream("Maven.xlsx")) {
+        util = new Util();
 
-                workbook = WorkbookFactory.create(Objects.requireNonNull(inputStream));
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    void testExcelFileExists() {
-        assertNotNull(workbook);
+    void testExcelFileExists() throws IOException {
+
+        provideInput("C:\\Users\\argig\\Desktop\\Maven.xlsx");
+        List<Employee> employeeList = util.read();
+        assertNotNull(employeeList);
+        assertFalse(employeeList.isEmpty());
+    }
+
+
+    @Test
+    void testExcelHasNoRows() throws IOException {
+
+        provideInput("C:\\Users\\argig\\Desktop\\test.xlsx");
+        List<Employee> employeeList = util.read();
+        assertTrue(employeeList.isEmpty());
     }
 
     @Test
-    void testExcelHasSheet(){
-        Sheet sheet = workbook.getSheetAt(0);
-        assertNotNull(sheet);
+    void testExcelInvalidPath() throws IOException {
+        String wrongPath = "Path:\\invalid_input.xlsx";
+        provideInput(wrongPath);
+        // This should throw a RuntimeException
+
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, ()->{
+            util.read();
+        });
+
+        assertEquals(runtimeException.getMessage(), "File not found: " + wrongPath);
     }
 
     @Test
-    void testExcelHasRows(){
-        Sheet sheet = workbook.getSheetAt(0);
-        Iterator<Row> rowIterator = sheet.iterator();
+    void testExcelInvalidFormat() {
+        String wrongFormat = "C:\\Users\\argig\\Desktop\\wrong format.xlsx";
+        provideInput(wrongFormat);
 
-        assertNotNull(rowIterator);
-    }
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, ()->{
+            util.read();
+        });
 
-    @Test
-    void testReadingExcelData() {
-        Sheet sheet = workbook.getSheetAt(0);
-        Iterator<Row> rowIterator = sheet.iterator();
-
-        // Assuming the first row is the header row
-        if (rowIterator.hasNext()) {
-            Row headerRow = rowIterator.next();
-            assertEquals("Name", headerRow.getCell(0).getStringCellValue());
-            assertEquals("Employee Number", headerRow.getCell(1).getStringCellValue());
-            assertEquals("Department", headerRow.getCell(2).getStringCellValue());
-        }
-
-
-        int rowCount = 0;
-        while (rowIterator.hasNext() && rowCount < 10) {
-            Row row = rowIterator.next();
-            rowCount++;
-        }
-
-        assertEquals(10, rowCount);
+        assertEquals(runtimeException.getMessage(), "Wrong excel format");
     }
 }
 
