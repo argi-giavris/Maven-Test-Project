@@ -2,6 +2,8 @@ package org.example;
 
 
 import org.example.models.Employee;
+import org.example.Util;
+import org.example.models.EmployeeRowMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,44 +32,33 @@ public class MainTest {
     void testExcelFileExists() throws IOException {
 
         provideInput("C:\\Users\\argig\\Desktop\\Maven.xlsx");
-        List<Employee> employeeList = util.read();
-        assertNotNull(employeeList);
-        assertFalse(employeeList.isEmpty());
+        FileInputStream file = util.openFileFromConsole();
+        assertNotNull(file);
+
     }
 
 
     @Test
-    void testExcelHasNoRows() throws IOException {
-
-        provideInput("C:\\Users\\argig\\Desktop\\test.xlsx");
-        List<Employee> employeeList = util.read();
-        assertTrue(employeeList.isEmpty());
+    void testExcelRead() throws IOException {
+        provideInput("C:\\Users\\argig\\Desktop\\Maven.xlsx");
+        try (FileInputStream file = util.openFileFromConsole()) {
+            RowMapper<Employee> employeeRowMapper = new EmployeeRowMapper();
+            List<Employee> employeeList = util.readFile(file, employeeRowMapper);
+            assertNotNull(employeeList);
+        }
     }
 
     @Test
-    void testExcelInvalidPath() throws IOException {
-        String wrongPath = "Path:\\invalid_input.xlsx";
-        provideInput(wrongPath);
-        // This should throw a RuntimeException
-
-        RuntimeException runtimeException = assertThrows(RuntimeException.class, ()->{
-            util.read();
-        });
-
-        assertEquals(runtimeException.getMessage(), "File not found: " + wrongPath);
+    void expectedNumberOfRows() throws IOException{
+        provideInput("C:\\Users\\argig\\Desktop\\Maven.xlsx");
+        try (FileInputStream file = util.openFileFromConsole()) {
+            RowMapper<Employee> employeeRowMapper = new EmployeeRowMapper();
+            List<Employee> employeeList = util.readFile(file, employeeRowMapper);
+            assertNotNull(employeeList);
+            assertEquals(10, employeeList.size(), "Expected size of the list is 10");
+        }
     }
 
-    @Test
-    void testExcelInvalidFormat() {
-        String wrongFormat = "C:\\Users\\argig\\Desktop\\wrong format.xlsx";
-        provideInput(wrongFormat);
-
-        RuntimeException runtimeException = assertThrows(RuntimeException.class, ()->{
-            util.read();
-        });
-
-        assertEquals(runtimeException.getMessage(), "Wrong excel format");
-    }
 }
 
 

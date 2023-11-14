@@ -1,11 +1,17 @@
 package org.example.models;
 
-public class Employee {
+import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.example.RowMapper;
+
+public class Employee
+{
     String name;
-    String id;
+    Integer id;
     String department;
 
-    public Employee(String name, String id, String department) {
+    public Employee(String name, Integer id, String department) {
         this.name = name;
         this.id = id;
         this.department = department;
@@ -20,11 +26,11 @@ public class Employee {
         this.name = name;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,4 +41,6 @@ public class Employee {
     public void setDepartment(String department) {
         this.department = department;
     }
+
+
 }
