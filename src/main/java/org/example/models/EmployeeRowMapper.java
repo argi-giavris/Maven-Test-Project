@@ -3,7 +3,6 @@ package org.example.models;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.example.RowMapper;
-import org.example.models.Employee;
 
 public class EmployeeRowMapper implements RowMapper<Employee> {
 

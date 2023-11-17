@@ -56,8 +56,17 @@
             <artifactId>log4j-core</artifactId>
             <version>2.21.1</version> <!-- Replace with the version you want to use -->
         </dependency>
-
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.7.0</version> <!-- Replace with the latest version available -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-lambda</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 
     </dependencies>
 
