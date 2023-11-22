@@ -14,7 +14,6 @@ public class XlsParser {
 
     public <T> List<T> readFile(InputStream is, RowMapper<T> rowMapper, String... columns) throws IOException {
 
-
         try (XSSFWorkbook wb = new XSSFWorkbook(is)) {
 
             Sheet sheet = wb.getSheetAt(0);

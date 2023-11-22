@@ -9,17 +9,17 @@ import static org.junit.Assert.assertTrue;
 
 public class CreateReaderTest {
 
-    Util util = new Util();
+    XlsReaderFactory readerFactory = new XlsReaderFactory();
 
     @Test
     public void testCreateReaderForLocalPath() {
-        XlsReader reader = util.createReader("1");
+        XlsReader reader = readerFactory.createReader("1");
         Assertions.assertTrue(reader instanceof XlsFileReader);
     }
 
     @Test
     public void testCreateReaderForUrl() {
-        XlsReader reader = util.createReader("2");
+        XlsReader reader = readerFactory.createReader("2");
         Assertions.assertTrue(reader instanceof XlsUrlReader);
     }
 

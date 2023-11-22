@@ -21,8 +21,8 @@ public class GetUserInputTest {
     void testGetUserInput() {
         provideInput("1\nC:\\Users\\argig\\Desktop\\Maven.xlsx\n1\n");
 
-        Util util = new Util();
-        List<String> userInput = util.getUserInput();
+        ArgumentParser argumentParser = new ArgumentParser();
+        List<String> userInput = argumentParser.getUserInput();
 
         Assertions.assertNotNull(userInput);
         Assertions.assertEquals(3, userInput.size());

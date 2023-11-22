@@ -1,3 +1,11 @@
 Name, ID, Department
-John, 1234, HR
-Alice, 2345, IT
+John Smith, 12324, HR
+Jane Doe, 234234, Sales
+Robert Johnson, 1441, Marketing
+Alice Brown, 1341341, Finance
+Michael Lee, 245665, Marketing
+Sarah Adams, 656353, Reasearch
+David Wilson, 3453453, Management
+Emily Davis, 35345, Developer
+Richard Moore, 7585, Sales
+Olivia Hall, 678678, Something
