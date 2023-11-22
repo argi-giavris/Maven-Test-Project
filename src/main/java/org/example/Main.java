@@ -10,17 +10,17 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         ArgumentParser argumentParser = new ArgumentParser();
-        List<String> userInput = argumentParser.getUserInput();
+        UserInput userInput = argumentParser.getUserInput();
 
         XlsReaderFactory readerFactory = new XlsReaderFactory();
-        XlsReader reader = readerFactory.createReader(userInput.get(0));
+        XlsReader reader = readerFactory.createReader(userInput.getReaderOption());
 
         XlsWriterFactory writerFactory = new XlsWriterFactory();
-        Writer<Employee> writer = writerFactory.createWriter(userInput.get(2));
+        Writer<Employee> writer = writerFactory.createWriter(userInput.getWriterOption());
 
         RowMapper<Employee> employeeRowMapper = new EmployeeRowMapper();
 
         Util util = new Util();
-        util.readAndWrite(userInput.get(1), reader, employeeRowMapper, writer, "Name","Employee Number", "Department");
+        util.readAndWrite(userInput.getFilePath(), reader, employeeRowMapper, writer, "Name","Employee Number", "Department");
     }
 }
